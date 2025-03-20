@@ -12,20 +12,21 @@ app.use(createPinia())
 app.use(router)
 app.use(Antd)
 router.beforeEach((to, from, next) => {
-    console.log('to >>>>>:', to);
+    // console.log('to >>>>>:', to);
     if (to.path === '/login') {
         next()
         return
     }
     const token = localStorage.getItem('token')
+    // console.log('token >>>', token)
     if (!token) {
         next('/login')
         return
     }
-    // if (to.path === '/home/account' || to.path === '/home/addacc') {
-    //     next()
-    //     return
-    // }
+    if (to.path == '/cloud/account') {
+        next()
+        return
+    }
     const account = localStorage.getItem('account')
     if (!account) {
         next('/cloud/account')

@@ -16,6 +16,11 @@
                 <template v-if="column.dataIndex === 'serial'">
                     {{ (pagination.current - 1) * pagination.pageSize + index + 1 }}
                 </template>
+                <template v-if="column.dataIndex === 'login'">
+                    <a-tag v-if="record.cookies" color="green">已登录</a-tag>
+                    <a-tag v-else color="red">未登录</a-tag>
+                </template>
+
                 <template v-if="column.dataIndex === 'update_time'">
                     {{ dayjs(text).fromNow() }}
                 </template>
@@ -102,6 +107,10 @@ const columns = ref([
         dataIndex: 'account',
     },
     {
+        title: '是否登录',
+        dataIndex: 'login',
+    },
+    {
         title: '更新时间',
         dataIndex: 'update_time',
     },
@@ -122,6 +131,9 @@ const getData = () => {
     API.getAccountList()
         .then((res) => {
             // console.log('res >>>>>:', res);
+            if (res.length == 1 && !res[0].cookies) {
+                onLogin(res[0].account)
+            }
             dataSource.value = res
             pagination.value.total = res.length
         })
@@ -149,7 +161,7 @@ const onLogin = (account) => {
 }
 
 const onSelect = (res) => {
-    console.log("🚀 ~ onSelect ~ res:", res)
+    // console.log("🚀 ~ onSelect ~ res:", res)
     if (!res.cookies) {
         onLogin(res.account)
     } else {
@@ -180,14 +192,7 @@ const importExcelData = (data) => {
         getData()
     })
 }
-const onSavePath = (path) => {
-    router.push({
-        path: '/cloud/index',
-        query: {
-            path: path,
-        },
-    })
-}
+
 </script>
 <style lang="less" scoped>
 .table-top {
