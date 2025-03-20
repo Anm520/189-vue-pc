@@ -1,0 +1,103 @@
+/**
+ * @description 天翼云盘根节点id
+ */
+export const ROOT_ID = '-11'
+/**
+ * @description 状态_执行
+ */
+export const STATUS_RUN = 1
+/**
+ * @description 状态_暂停
+ */
+export const STATUS_PAUSE = 2
+/**
+ * @description 状态_完结
+ */
+export const STATUS_DONE = 3
+export const ROOT_PATH = { id: ROOT_ID, name: '我的网盘', fullIds: ['-11'], fullNames: ['我的网盘'] }
+export const errorCode = {
+  AccessDenyOfHighFrequency: '由于访问频率过高，拒绝访问',
+  ErrorDownloadFileNotFound: '下载时文件不存在',
+  ErrorDownloadFileDeleted: '下载时文件已被删除',
+  ErrorDownloadFileInvalidParam: '下载时无效的下载参数',
+  ErrorDownloadFileInternalError: '下载时内部错误',
+  ErrorDownloadFileInvalidSessionKey: '下载时无效的sessionKey',
+  ErrorDownloadFileShareTimeOut: '下载时分享文件超时',
+  FileAlreadyExists: '文件或文件夹已存在',
+  FileNotFound: '文件或文件夹不存在',
+  FileTooLarge: '上传文件超过最大限制',
+  InsufficientStorageSpace: '剩余存储空间不足',
+  InternalError: '内部错误',
+  InvalidArgument: '非法参数',
+  InvalidPassword: '密码不正确',
+  InvalidParentFolder: '无效的父目录',
+  InvalidSessionKey: '非法登录会话Key',
+  InvalidSignature: '非法签名',
+  MoveFileValidError: '文件移动类型检查错误',
+  MyIDQRCodeNotLogin: 'MyID二维码未登录',
+  MyIDSignatureVerfiyFailed: 'MyID数字签名验证失败',
+  NoSuchUser: '用户账号不存在',
+  ParentNotFolder: '父文件夹类型不正确',
+  PermissionDenied: '访问权限不足',
+  QRCodeNotBind: '二维码未绑定',
+  QRCodeNotFound: '二维码不存在',
+  ServiceNotOpen: '云存储服务尚未开通',
+  UploadFileAccessViolation: '上传文件访问冲突',
+  UploadFileNotFound: '上传文件不存在',
+  UploadFileSaveFailed: '上传文件保存至云存储失败',
+  UploadFileVerifyFailed: '上传文件校验失败',
+  ShareSpecialDirError: '共享特殊目录',
+  SpecialDirShareError: '特殊目录分享',
+  BatchOperSuccessed: '批量操作部分成功',
+  BatchOperFileFailed: '批量操作失败',
+  ShareInfoNotFound: '没有找到分享信息',
+  InvalidUploadFileStatus: '无效的上传文件状态',
+  ShareOverLimitedNumber: '分享次数超限',
+  NotFoundPersonQuestion: '没有设置个人问题',
+  InfoSecurityErrorCode: '违反信安规则',
+  CopyFileOverLimitedSpaceError: '转存文件总大小超限',
+  CopyFileOverLimitedNumError: '转存次数超限',
+  InfosecuMD5CheckError: '违反信安规则',
+  'ShareAuditNo/ShareAuditNotPass': '分享审核不通过',
+  TextAuditErrorCode: '敏感词检查不通过',
+  UserInvalidOpenToken: '无效的天翼账号Token',
+  CommonOperNotSupport: '操作不支持，建议升级版本',
+  PhotoNumOverLimited: '照片数量超限',
+  FileCopyToSubFolderError: '父目录拷贝或移动至自身子目录错误',
+  UserDayFlowOverLimited: '用户当日流量超过上限',
+  PayMoneyNumErrorCode: '支付金额有误',
+  UserOrderNotExists: '用户订单不存在',
+  CreateSaleOrderErrorCode: '创建用户订单异常',
+  ShareDumpFileNumOverLimited: '分享转存文件数超限',
+  ShareAuditWaiting: '分享审核中',
+  UploadSingleFileOverLimited: '上传单文件大小超限',
+  PrivateFileError: 'private space file',
+  SpeedOrderRecordExist: '已经生成订购关系',
+  SpeedOrderRecordNotExist: '没有找到订购关系',
+  SpeedProdAlreadyOrder: '该宽带已订购该产品',
+  SpeedDialaccountNotFound: '找不到宽带账号',
+  SpeedNotGdBroadbandUser: '非广东宽带拨号用户',
+  SpeedUnOrder: '智能提速套餐未订购',
+  SpeedInfoNotExist: '智能提速套餐信息不存在',
+  SpeedInfoAlreadyExist: '智能提速套餐信息已存在',
+  UnSpeedUpError: '用户处于未提速状态',
+  NotOpenAccount: '手机号未创建天翼帐号',
+  ObjectIdVerifyFailed: 'objectId校验失败',
+  ErrorAccessCode: '分享访问吗错误',
+  ShareNotReceiver: '好友分享，访问者非接受者',
+  CommonInvalidSessionKey: '分享相关接口时，好友分享，需要登陆',
+  ParasTimeOut: 'paras参数超时',
+  TokenAlreadyExist: '该天翼云盘已绑定',
+  FileStatusInvalid: 'FMUserFile fileStatus is invalid',
+  ShareNotFoundFlatDir: '分享平铺目录未找到',
+  ShareDumpFileOverload: '分享转存文件数目超限',
+  ShareNotFound: '分享未找到',
+  ShareAccessOverload: '分享访问次数超限',
+  ShareCreateFailed: '分享创建失败',
+  ShareExpiredError: '分享已过期',
+  ShareFileNotBelong: '文件不属于当前分享文件或目录',
+  ShareCreateOverload: '用户创建分享次数超限',
+  AccountNoAccess: '出口ip不在白名单列表中',
+  ErrorLogin: '登录账号失败，paras只有1分钟有效，且只能请求一次',
+  InvalidAccessToken: 'AccessToken无效',
+}
