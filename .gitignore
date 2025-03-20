@@ -28,6 +28,6 @@ coverage
 *.sw?
 *.zip
 *.tsbuildinfo
-# cloud-h5
+cloud-vue-pc
 # vite.config.js
 
