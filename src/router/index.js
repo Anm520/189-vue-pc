@@ -76,6 +76,14 @@ const menuRoutes = [
       icon: DeleteOutlined,
     },
   },
+  {
+    path: '/cloud/channel',
+    name: '频道消息',
+    component: () => import('../views/ChanelViews/index.vue'),
+    meta: {
+      icon: DeleteOutlined,
+    },
+  },
   //   {
   //     path: '/test',
   //     name: 'Test',
