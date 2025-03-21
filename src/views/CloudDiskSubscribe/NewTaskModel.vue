@@ -10,7 +10,8 @@
                 <component :is="originVNode" />
             </div>
         </template>
-        <a-form ref="formRef" :label-col="layout.labelCol" :model="formState" :rules="rules" :wrapper-col="layout.wrapperCol">
+        <a-form ref="formRef" :label-col="layout.labelCol" :model="formState" :rules="rules"
+            :wrapper-col="layout.wrapperCol">
             <a-form-item label="分享链接" name="share_url">
                 <a-input-search v-model:value="formState.share_url" @search="(val) => onSearch(val, true)" />
             </a-form-item>
@@ -57,16 +58,25 @@
             <a-form-item label="总集数" name="episode_total">
                 <a-input-number v-model:value="formState.episode_total" />
             </a-form-item>
-            <a-form-item label="更新集数" name="episode"> <a-input-number v-model:value="formState.episode" /> </a-form-item>
+            <a-form-item label="更新集数" name="episode"> <a-input-number v-model:value="formState.episode" />
+            </a-form-item>
 
         </a-form>
         <template #footer>
-            <a-button key="back" @click="handleCancel">取消</a-button>
-            <a-button key="submit" :loading="loading" type="primary" @click="handleOk">保存</a-button>
+
+            <div class="footer-btn">
+                <a-button type="primary" @click='onSaveOneClick' :loading="OneClickLoading">一键转存</a-button>
+                <div>
+                    <a-button key="back" @click="handleCancel">取消</a-button>
+                    <a-button key="submit" :loading="loading" type="primary" @click="handleOk">保存</a-button>
+                </div>
+
+            </div>
         </template>
     </a-modal>
     <FolderTreeModel v-model="open" @ok="handleFolderTree" :taskName="formState.task_name" />
-    <ShareFileIdSelectModal v-if="ShareFileOpen" v-model="ShareFileOpen" :options="shareCodeInfo" @ok="handleShareFile" />
+    <ShareFileIdSelectModal v-if="ShareFileOpen" v-model="ShareFileOpen" :options="shareCodeInfo"
+        @ok="handleShareFile" />
 </template>
 <script setup>
 import { nextTick, onMounted, reactive, ref, toRaw, watch } from 'vue'
@@ -173,6 +183,7 @@ const rules = {
         },
     ],
 }
+const OneClickLoading = ref(false)
 const handleOk = () => {
     loading.value = true
     formRef.value
@@ -204,6 +215,36 @@ const handleOk = () => {
             console.log('error', error)
             loading.value = false
         })
+}
+const onSaveOneClick = () => {
+    OneClickLoading.value = true
+    formRef.value
+        .validate().then(() => {
+            const params = {
+                type: 'SHARE_SAVE',
+                taskInfos: JSON.stringify([{ fileId: formState.share_file_id, fileName: formState.task_name, isFolder: 1 }]),
+                targetFolderId: formState.save_path_id,
+                shareId: formState.share_id,
+            }
+
+            API.createBatchTask(params)
+                .then((res) => {
+
+                    message.success('一键转存成功')
+                    model.value = false
+                    $emit('update')
+                })
+                .finally(() => {
+                    OneClickLoading.value = false
+                })
+        }).catch((error) => {
+
+            message.error('一键转存失败')
+            OneClickLoading.value = false
+        })
+
+
+
 }
 const resetForm = () => {
     formRef.value.resetFields()
@@ -247,4 +288,10 @@ onMounted(() => {
     }
 })
 </script>
-<style lang="less"></style>
+<style lang="less" scoped>
+.footer-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+</style>

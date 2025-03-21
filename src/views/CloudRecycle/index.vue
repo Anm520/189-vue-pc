@@ -89,7 +89,7 @@ const onClearRecycle = () => {
       console.log('res >>>', res)
       setTimeout(() => {
         getList()
-      }, 2000)
+      }, 1000)
     })
     .finally(() => {
       loading.value = false

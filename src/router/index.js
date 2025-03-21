@@ -4,41 +4,14 @@ import {
     AntCloudOutlined,
     BarsOutlined,
     DeleteOutlined,
-    MenuFoldOutlined,
+    CommentOutlined,
     CopyOutlined,
 } from '@ant-design/icons-vue'
 
 const menuRoutes = [
-    //   {
-    //     path: '/vueuse',
-    //     name: 'VueUse',
-    //     redirect: '/vueuse/use-clipboard',
-    //     component: () => import('../views/RouteViewTemplate.vue'),
-    //     meta: {
-    //       icon: UserOutlined,
-    //     },
-    //     children: [
-    //       {
-    //         path: '/vueuse/use-clipboard',
-    //         name: 'VueUseClipboard',
-    //         component: () => import('../views/VueUse/UseClipboard.vue'),
-    //         meta: {
-    //           icon: CopyOutlined,
-    //         },
-    //       },
-    //       {
-    //         path: '/vueuse/use-route-query',
-    //         name: 'VueUseRouteQuery',
-    //         component: () => import('../views/VueUse/useRouteQuery.vue'),
-    //         meta: {
-    //           icon: MenuFoldOutlined,
-    //         },
-    //       },
-    //     ],
-    //   },
     {
         path: '/cloud/index',
-        name: '天翼云盘',
+        name: '云盘文件',
         component: () => import('../views/CloudDisk/index.vue'),
         meta: {
             icon: AntCloudOutlined,
@@ -54,7 +27,7 @@ const menuRoutes = [
     },
     {
         path: '/cloud/subscribe',
-        name: '天翼云盘订阅',
+        name: '订阅任务',
         component: () => import('../views/CloudDiskSubscribe/index.vue'),
         meta: {
             icon: BarsOutlined,
@@ -62,7 +35,7 @@ const menuRoutes = [
     },
     {
         path: '/cloud/scheduled',
-        name: '定时任务',
+        name: '定时配置',
         component: () => import('../views/ScheduledTasks/index.vue'),
         meta: {
             icon: ClockCircleOutlined,
@@ -81,7 +54,7 @@ const menuRoutes = [
         name: '频道消息',
         component: () => import('../views/ChanelViews/index.vue'),
         meta: {
-            icon: DeleteOutlined,
+            icon: CommentOutlined,
         },
     },
     //   {
@@ -94,7 +67,7 @@ const menuRoutes = [
     //   },
 ]
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: createWebHashHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: '/',
