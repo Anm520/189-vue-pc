@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
+
     <a-form :label-col="{ span: 8 }" :model="formData" :wrapper-col="{ span: 16 }" autocomplete="off" name="basic"
       @finish="onFinish">
-
       <a-form-item :rules="[{ required: true, message: '请选择!' }]" label="执行状态">
         <a-radio-group v-model:value="formData.is_execute">
           <a-radio :value="0">暂停</a-radio>
@@ -29,9 +29,15 @@
         <a-input v-model:value="formData.chanel_url" style="width: 260px" />
       </a-form-item>
       <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-        <a-button html-type="submit" type="primary">保存</a-button>
+        <a-space>
+          <FileUpload @ok="importExcelData" title="导入"></FileUpload>
+          <a-button type="primary" @click="exportToExcel">导出</a-button>
+          <a-button html-type="submit" type="primary">保存</a-button>
+        </a-space>
+
       </a-form-item>
     </a-form>
+    <ChangePassWord />
   </div>
 </template>
 <script setup>
@@ -39,6 +45,9 @@ import API from '@/api/cloud.js'
 import { onMounted, ref, watch } from 'vue'
 import { message } from 'ant-design-vue'
 import { useConfigStore } from '@/stores/config'
+import ChangePassWord from './ChangePassWord.vue'
+import excel from '@/utils/excel.js'
+import FileUpload from '@/components/FileUpload.vue'
 const formData = ref({
   is_execute: 0,
   time_interval: '',
@@ -64,7 +73,16 @@ const onFinish = (values) => {
     }
   })
 }
+// 导出所有数据
+const exportToExcel = () => {
+  excel.exportToExcel([formData.value], '定时配置.xlsx')
+  message.success('导出成功')
+}
+const importExcelData = (data) => {
+  console.log('导入的数据', data)
+  formData.value = data[0]
 
+}
 onMounted(() => {
   getConfig()
 })

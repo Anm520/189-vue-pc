@@ -4,7 +4,7 @@ import {
   AntCloudOutlined,
   BarsOutlined,
   DeleteOutlined,
-  MenuFoldOutlined,
+  CommentOutlined,
   CopyOutlined,
 } from '@ant-design/icons-vue'
 
@@ -38,7 +38,7 @@ const menuRoutes = [
   //   },
   {
     path: '/cloud/index',
-    name: '天翼云盘',
+    name: '云盘文件',
     component: () => import('../views/CloudDisk/index.vue'),
     meta: {
       icon: AntCloudOutlined,
@@ -54,7 +54,7 @@ const menuRoutes = [
   },
   {
     path: '/cloud/subscribe',
-    name: '天翼云盘订阅',
+    name: '订阅任务',
     component: () => import('../views/CloudDiskSubscribe/index.vue'),
     meta: {
       icon: BarsOutlined,
@@ -62,7 +62,7 @@ const menuRoutes = [
   },
   {
     path: '/cloud/scheduled',
-    name: '定时任务',
+    name: '定时配置',
     component: () => import('../views/ScheduledTasks/index.vue'),
     meta: {
       icon: ClockCircleOutlined,
@@ -81,7 +81,7 @@ const menuRoutes = [
     name: '频道消息',
     component: () => import('../views/ChanelViews/index.vue'),
     meta: {
-      icon: DeleteOutlined,
+      icon: CommentOutlined,
     },
   },
   //   {
