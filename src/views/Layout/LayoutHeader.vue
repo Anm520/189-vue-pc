@@ -5,33 +5,24 @@
         <UserOutlined />
       </template>
     </a-avatar>
-    <span>{{ cloudDiskStore.CloudDiskUserInfo.account }}</span>
+    <span>{{ account }}</span>
   </a-space>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-import { UserOutlined } from '@ant-design/icons-vue'
-
-import TaskAPI from '@/api/cluodtask.js'
-import OtherAPI from '@/api/index.js'
-import { useCloudDiskStore } from '@/stores/CloudDisk.js'
-const cloudDiskStore = useCloudDiskStore()
-const getLoginName = () => {
-  OtherAPI.getLoginName().then((res) => {
-    cloudDiskStore.setCloudDiskUserInfo({ loginName: res.loginName })
-    TaskAPI.updateUserInfo({ login_name: res.loginName }).then((update) => {
-      // TaskAPI.getUserInfo({ login_name: res.loginName }).then((user) => {
-      //   //   console.log(user)
-      // })
-    })
+  import { onMounted, computed } from 'vue'
+  import { UserOutlined } from '@ant-design/icons-vue'
+  import { useCloudDiskStore } from '@/stores/CloudDisk.js'
+  import { hidePhone } from '@/utils'
+  const cloudDiskStore = useCloudDiskStore()
+  const account = computed(() => {
+    if (cloudDiskStore.CloudDiskUserInfo.account) {
+      return hidePhone(cloudDiskStore.CloudDiskUserInfo.account)
+    }
+    return ''
   })
-  OtherAPI.getUserBriefInfo().then((res) => {
-    cloudDiskStore.setCloudDiskUserInfo({ nickname: res.nickname, sessionKey: res.sessionKey })
+  onMounted(() => {
+    // getLoginName()
   })
-}
-onMounted(() => {
-  // getLoginName()
-})
 </script>
 <style lang="less" scoped></style>

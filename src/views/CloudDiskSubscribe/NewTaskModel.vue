@@ -10,8 +10,7 @@
                 <component :is="originVNode" />
             </div>
         </template>
-        <a-form ref="formRef" :label-col="layout.labelCol" :model="formState" :rules="rules"
-            :wrapper-col="layout.wrapperCol">
+        <a-form ref="formRef" :label-col="layout.labelCol" :model="formState" :rules="rules" :wrapper-col="layout.wrapperCol">
             <a-form-item label="分享链接" name="share_url">
                 <a-input-search v-model:value="formState.share_url" @search="(val) => onSearch(val, true)" />
             </a-form-item>
@@ -74,9 +73,8 @@
             </div>
         </template>
     </a-modal>
-    <FolderTreeModel v-model="open" @ok="handleFolderTree" :taskName="formState.task_name" />
-    <ShareFileIdSelectModal v-if="ShareFileOpen" v-model="ShareFileOpen" :options="shareCodeInfo"
-        @ok="handleShareFile" />
+    <FolderTreeModel v-if="open" v-model="open" @ok="handleFolderTree" :taskName="formState.task_name" />
+    <ShareFileIdSelectModal v-if="ShareFileOpen" v-model="ShareFileOpen" :options="shareCodeInfo" @ok="handleShareFile" />
 </template>
 <script setup>
 import { nextTick, onMounted, reactive, ref, toRaw, watch } from 'vue'
