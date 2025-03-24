@@ -10,7 +10,7 @@
     <a-table :columns="columns" :dataSource="dataSource" :loading="tableLoading" :pagination="pagination">
       <template #bodyCell="{ column, record, index, text }">
         <template v-if="column.dataIndex === 'account'">
-          {{ text }}
+          {{ hidePhone(text) }}
           <a-tag v-if="text == cuurrentAcc" color="green">当前</a-tag>
         </template>
         <template v-if="column.dataIndex === 'serial'">
@@ -132,9 +132,7 @@
         if (res.length == 1 && !res[0].cookies) {
           onLogin(res[0].account)
         }
-        dataSource.value = res.map((item) => {
-          return { ...item, account: hidePhone(item.account) }
-        })
+        dataSource.value = res
         pagination.value.total = res.length
       })
       .finally(() => {
