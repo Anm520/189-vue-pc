@@ -33,7 +33,7 @@
       </template>
     </a-table>
     <AddAccModel v-if="openAddAcc" v-model="openAddAcc" @update="getData" />
-    <EditAccModel v-if="openEditAcc" v-model="openEditAcc" :account="editAccount" @update="getData" />
+    <EditAccModel v-if="openEditAcc" v-model="openEditAcc" :account="editAccount" @update="onEdit" />
   </div>
 </template>
 <script setup>
@@ -139,6 +139,13 @@
         tableLoading.value = false
       })
   }
+  const onEdit = (record) => {
+    if (record.account == cuurrentAcc.value) {
+      //   console.log('onEdit >>>', record)
+      onSelect(record)
+    }
+    data.value.length > 1 && getData()
+  }
   const setAccount = (res) => {
     window.sessionStorage.setItem('cloud', res.cookies || '')
     window.localStorage.setItem('account', res.account)
@@ -161,7 +168,7 @@
   }
 
   const onSelect = (res) => {
-    // console.log("🚀 ~ onSelect ~ res:", res)
+    // console.log('🚀 ~ onSelect ~ res:', res)
     if (!res.cookies) {
       onLogin(res.account)
     } else {
