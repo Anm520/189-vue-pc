@@ -10,7 +10,8 @@
                 <component :is="originVNode" />
             </div>
         </template>
-        <a-form ref="formRef" :label-col="layout.labelCol" :model="formState" :rules="rules" :wrapper-col="layout.wrapperCol">
+        <a-form ref="formRef" :label-col="layout.labelCol" :model="formState" :rules="rules"
+            :wrapper-col="layout.wrapperCol">
             <a-form-item label="分享链接" name="share_url">
                 <a-input-search v-model:value="formState.share_url" @search="(val) => onSearch(val, true)" />
             </a-form-item>
@@ -54,6 +55,11 @@
                     <a-select-option :value="0">仅文件</a-select-option>
                 </a-select>
             </a-form-item>
+            <a-form-item label="执行时间" name="task_week">
+                <a-select v-model:value="formState.task_week" placeholder="请选择" mode="multiple">
+                    <a-select-option :value="item.value" v-for="item in weeks">{{ item.label }}</a-select-option>
+                </a-select>
+            </a-form-item>
             <a-form-item label="总集数" name="episode_total">
                 <a-input-number v-model:value="formState.episode_total" />
             </a-form-item>
@@ -74,7 +80,8 @@
         </template>
     </a-modal>
     <FolderTreeModel v-if="open" v-model="open" @ok="handleFolderTree" :taskName="formState.task_name" />
-    <ShareFileIdSelectModal v-if="ShareFileOpen" v-model="ShareFileOpen" :options="shareCodeInfo" @ok="handleShareFile" />
+    <ShareFileIdSelectModal v-if="ShareFileOpen" v-model="ShareFileOpen" :options="shareCodeInfo"
+        @ok="handleShareFile" />
 </template>
 <script setup>
 import { nextTick, onMounted, reactive, ref, toRaw, watch } from 'vue'
@@ -85,7 +92,16 @@ import FolderTreeModel from '@/components/FolderTreeModel.vue'
 import ShareFileIdSelectModal from './ShareFileIdSelectModal.vue'
 import dayjs from 'dayjs'
 import { useCloudDiskStore } from '@/stores/CloudDisk.js'
-
+const weeks = reactive([
+    { label: '每日', value: 8 },
+    { label: '周一', value: 1 },
+    { label: '周二', value: 2 },
+    { label: '周三', value: 3 },
+    { label: '周四', value: 4 },
+    { label: '周五', value: 5 },
+    { label: '周六', value: 6 },
+    { label: '周日', value: 7 }
+])
 const cloudDiskStore = useCloudDiskStore()
 const open = ref(false)
 const handleFolderTree = (row) => {
@@ -109,9 +125,7 @@ const layout = {
         span: 13,
     },
 }
-onMounted(() => {
 
-})
 let formState = reactive({
     task_name: '',
     status: 1,
@@ -126,6 +140,7 @@ let formState = reactive({
     save_type: 0,
     episode_total: 0,
     episode: 0,
+    task_week: [8]
 })
 watch(
     () => record,
@@ -136,6 +151,7 @@ watch(
                 ...toRaw(newVal),
                 create_time: dayjs(newVal.create_time).format('YYYY-MM-DD HH:mm:ss'),
                 update_time: '',
+                task_week: JSON.parse(newVal.task_week)
             })
 
             nextTick(() => {
@@ -188,7 +204,7 @@ const handleOk = () => {
         .validate()
         .then(async () => {
             if (isAdd) {
-                API.createTask({ ...formState, account: cloudDiskStore.CloudDiskUserInfo.account })
+                API.createTask({ ...formState, account: cloudDiskStore.CloudDiskUserInfo.account, task_week: JSON.stringify(formState.task_week) })
                     .then((res) => {
                         message.success('保存成功')
                         model.value = false
@@ -198,7 +214,7 @@ const handleOk = () => {
                         loading.value = false
                     })
             } else {
-                API.updateTask({ ...formState, account: cloudDiskStore.CloudDiskUserInfo.account })
+                API.updateTask({ ...formState, account: cloudDiskStore.CloudDiskUserInfo.account, task_week: JSON.stringify(formState.task_week) })
                     .then((res) => {
                         message.success('保存成功')
                         model.value = false
