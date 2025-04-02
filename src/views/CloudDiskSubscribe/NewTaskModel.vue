@@ -147,11 +147,17 @@ watch(
     (newVal) => {
         // console.log('newVal>>>>', newVal)
         if (!isAdd) {
+            let week = []
+            try {
+                week = JSON.parse(newVal.task_week)
+            } catch (error) {
+                console.log('error >>>>>:', error);
+            }
             formState = reactive({
                 ...toRaw(newVal),
                 create_time: dayjs(newVal.create_time).format('YYYY-MM-DD HH:mm:ss'),
                 update_time: '',
-                task_week: JSON.parse(newVal.task_week)
+                task_week: week
             })
 
             nextTick(() => {
@@ -214,7 +220,7 @@ const handleOk = () => {
                         loading.value = false
                     })
             } else {
-                API.updateTask({ ...formState, account: cloudDiskStore.CloudDiskUserInfo.account, task_week: JSON.stringify(formState.task_week) })
+                API.updateTask({ ...formState, task_week: JSON.stringify(formState.task_week) })
                     .then((res) => {
                         message.success('保存成功')
                         model.value = false
