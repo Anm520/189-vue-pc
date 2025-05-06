@@ -60,6 +60,24 @@
                     <a-select-option :value="item.value" v-for="item in weeks">{{ item.label }}</a-select-option>
                 </a-select>
             </a-form-item>
+            <a-form-item label="筛选文本" name="filter_text">
+                <a-input v-model:value="formState.filter_text" placeholder="筛选文本" />
+            </a-form-item>
+            <a-form-item label="筛选文本模式" name="filter_text_type">
+                <a-select v-model:value="formState.filter_text_type" placeholder="请选择">
+                    <a-select-option :value="1">包含</a-select-option>
+                    <a-select-option :value="2">不包含</a-select-option>
+                </a-select>
+            </a-form-item>
+            <a-form-item label="筛选集数" name="episode_filter_num">
+                <a-input-number v-model:value="formState.episode_filter_num" placeholder="筛选集数" />
+            </a-form-item>
+            <a-form-item label="筛选集数模式" name="episode_filter_type">
+                <a-select v-model:value="formState.episode_filter_type" placeholder="请选择">
+                    <a-select-option :value="1">大于</a-select-option>
+                    <a-select-option :value="2">小于</a-select-option>
+                </a-select>
+            </a-form-item>
             <a-form-item label="总集数" name="episode_total">
                 <a-input-number v-model:value="formState.episode_total" />
             </a-form-item>
@@ -70,7 +88,11 @@
         <template #footer>
 
             <div class="footer-btn">
-                <a-button type="primary" @click='onSaveOneClick' :loading="OneClickLoading">一键转存</a-button>
+                <div>
+                    <a-button type="primary" @click='onSaveOneClick' :loading="OneClickLoading">一键转存</a-button>
+                    <a-button type="primary" @click='onJumpLink'>查看链接</a-button>
+                </div>
+
                 <div>
                     <a-button key="back" @click="handleCancel">取消</a-button>
                     <a-button key="submit" :loading="loading" type="primary" @click="handleOk">保存</a-button>
@@ -127,6 +149,10 @@ const layout = {
 }
 
 let formState = reactive({
+    episode_filter_num: 0,
+    episode_filter_type: 1,
+    filter_text: '',
+    filter_text_type: 1,
     task_name: '',
     status: 1,
     share_id: '',
@@ -262,9 +288,9 @@ const onSaveOneClick = () => {
             message.error('一键转存失败')
             OneClickLoading.value = false
         })
-
-
-
+}
+const onJumpLink = () => {
+    window.open(formState.share_url, 'cloud')
 }
 const resetForm = () => {
     formRef.value.resetFields()
