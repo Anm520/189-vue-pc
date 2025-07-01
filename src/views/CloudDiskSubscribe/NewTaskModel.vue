@@ -1,5 +1,5 @@
 <template>
-    <a-modal :maskClosable="false" :open="model" class="ant-modal-dray" @cancel="handleCancel" width="600px">
+    <a-modal :maskClosable="false" :open="model" class="ant-modal-dray" @cancel="handleCancel" width="900px">
         <template #title>
             <div ref="modalTitleRef" class="modal-title" style="width: 100%; cursor: move">
                 {{ isAdd ? '新建任务' : '编辑' }}
@@ -10,39 +10,59 @@
                 <component :is="originVNode" />
             </div>
         </template>
-        <a-form ref="formRef" :label-col="layout.labelCol" :model="formState" :rules="rules"
-            :wrapper-col="layout.wrapperCol">
-            <a-form-item label="分享链接" name="share_url">
-                <a-input-search v-model:value="formState.share_url" @search="(val) => onSearch(val, true)" />
-            </a-form-item>
-            <a-form-item label="shareCode" name="share_code">
-                <a-input-search v-model:value="formState.share_code" @search="(val) => onSearch(val, false)" />
-            </a-form-item>
-            <a-form-item label="访问码" name="access_code">
-                <a-input v-model:value="formState.access_code" />
-            </a-form-item>
+        <a-form ref="formRef" :model="formState" :rules="rules">
+            <a-row>
+                <a-col :span="10">
+                    <a-form-item label="分享链接" name="share_url">
+                        <a-input-search v-model:value="formState.share_url" @search="(val) => onSearch(val, true)"
+                            style="width: 100%;" />
+                    </a-form-item>
+                </a-col>
+                <a-col :span="8">
+                    <a-form-item label="shareCode" name="share_code">
+                        <a-input-search v-model:value="formState.share_code" @search="(val) => onSearch(val, false)" />
+                    </a-form-item>
+                </a-col>
+                <a-col :span="6">
+                    <a-form-item label="访问码" name="access_code">
+                        <a-input v-model:value="formState.access_code" />
+                    </a-form-item>
+                </a-col>
+            </a-row>
+
+            <a-row>
+                <a-col :span="10">
+                    <a-form-item label="分享目录ID" name="share_file_id">
+                        <a-input-search v-model:value="formState.share_file_id" @search="ShareFileOpen = true" />
+                    </a-form-item>
+                </a-col>
+                <a-col :span="8"><a-form-item label="分享ID" name="share_id">
+                        <a-input v-model:value="formState.share_id" />
+                    </a-form-item></a-col>
+                <a-col :span="6"> <a-form-item label="分享模式" name="share_mode">
+                        <!--3 5-->
+                        <a-select v-model:value="formState.share_mode" placeholder="请选择">
+                            <a-select-option :value="3">3-普通pc链接</a-select-option>
+                            <a-select-option :value="5">5-移动端订阅中心链接</a-select-option>
+                        </a-select>
+                    </a-form-item></a-col>
+            </a-row>
 
 
-            <a-form-item label="任务名称" name="task_name">
-                <a-input v-model:value="formState.task_name" />
-            </a-form-item>
-            <a-form-item label="分享ID" name="share_id">
-                <a-input v-model:value="formState.share_id" />
-            </a-form-item>
 
-            <a-form-item label="分享目录ID" name="share_file_id">
-                <a-input-search v-model:value="formState.share_file_id" @search="ShareFileOpen = true" />
-            </a-form-item>
-            <a-form-item label="分享模式" name="share_mode">
-                <!--3 5-->
-                <a-select v-model:value="formState.share_mode" placeholder="请选择">
-                    <a-select-option :value="3">3-普通pc链接</a-select-option>
-                    <a-select-option :value="5">5-移动端订阅中心链接</a-select-option>
-                </a-select>
-            </a-form-item>
-            <a-form-item label="保存目录ID" name="save_path_id">
-                <a-input-search v-model:value="formState.save_path_id" @search="open = true" />
-            </a-form-item>
+
+
+            <a-row>
+                <a-col :span="12"><a-form-item label="保存目录ID" name="save_path_id">
+                        <a-input-search v-model:value="formState.save_path_id" @search="open = true" />
+                    </a-form-item></a-col>
+                <a-col :span="12"><a-form-item label="任务名称" name="task_name">
+                        <a-input v-model:value="formState.task_name" />
+                    </a-form-item></a-col>
+            </a-row>
+
+
+
             <a-form-item label="任务状态" name="status">
                 <a-select v-model:value="formState.status" placeholder="请选择">
                     <a-select-option :value="1">执行</a-select-option>
@@ -60,29 +80,41 @@
                     <a-select-option :value="item.value" v-for="item in weeks">{{ item.label }}</a-select-option>
                 </a-select>
             </a-form-item>
-            <a-form-item label="筛选文本" name="filter_text">
-                <a-input v-model:value="formState.filter_text" placeholder="筛选文本" />
-            </a-form-item>
-            <a-form-item label="筛选文本模式" name="filter_text_type">
-                <a-select v-model:value="formState.filter_text_type" placeholder="请选择">
-                    <a-select-option :value="1">包含</a-select-option>
-                    <a-select-option :value="2">不包含</a-select-option>
-                </a-select>
-            </a-form-item>
-            <a-form-item label="筛选集数" name="episode_filter_num">
-                <a-input-number v-model:value="formState.episode_filter_num" placeholder="筛选集数" />
-            </a-form-item>
-            <a-form-item label="筛选集数模式" name="episode_filter_type">
-                <a-select v-model:value="formState.episode_filter_type" placeholder="请选择">
-                    <a-select-option :value="1">大于</a-select-option>
-                    <a-select-option :value="2">小于</a-select-option>
-                </a-select>
-            </a-form-item>
-            <a-form-item label="总集数" name="episode_total">
-                <a-input-number v-model:value="formState.episode_total" />
-            </a-form-item>
-            <a-form-item label="更新集数" name="episode"> <a-input-number v-model:value="formState.episode" />
-            </a-form-item>
+            <a-row>
+                <a-col :span="10"> <a-form-item label="筛选文本" name="filter_text">
+                        <a-input v-model:value="formState.filter_text" placeholder="筛选文本" style="width: 90%;" />
+                    </a-form-item></a-col>
+                <a-col :span="8"> <a-form-item label="筛选文本模式" name="filter_text_type">
+                        <a-select v-model:value="formState.filter_text_type" placeholder="请选择">
+                            <a-select-option :value="1">包含</a-select-option>
+                            <a-select-option :value="2">不包含</a-select-option>
+                        </a-select>
+                    </a-form-item> </a-col>
+            </a-row>
+            <a-row>
+                <a-col :span="10"> <a-form-item label="筛选集数" name="episode_filter_num">
+                        <a-input-number v-model:value="formState.episode_filter_num" placeholder="筛选集数"
+                            style="width: 90%;" />
+                    </a-form-item> </a-col>
+                <a-col :span="8"> <a-form-item label="筛选集数模式" name="episode_filter_type">
+                        <a-select v-model:value="formState.episode_filter_type" placeholder="请选择">
+                            <a-select-option :value="1">大于</a-select-option>
+                            <a-select-option :value="2">小于</a-select-option>
+                        </a-select>
+                    </a-form-item></a-col>
+            </a-row>
+
+            <a-row>
+                <a-col :span="10"><a-form-item label="总集数" name="episode_total">
+                        <a-input-number v-model:value="formState.episode_total" style="width: 90%;" />
+                    </a-form-item></a-col>
+                <a-col :span="8"> <a-form-item label="更新集数" name="episode"> <a-input-number
+                            v-model:value="formState.episode" style="width: 90%;" />
+                    </a-form-item></a-col>
+            </a-row>
+
+
+
 
         </a-form>
         <template #footer>
