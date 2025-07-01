@@ -10,38 +10,43 @@
                 <component :is="originVNode" />
             </div>
         </template>
-        <a-form ref="formRef" :model="formState">
-            <template v-for="(domain, index) in formState.domains" :key="domain.key">
-                <a-row>
-                    <a-col :span="11">
-                        <a-form-item label="账号" :name="['domains', index, 'account']" :rules="{
-                            required: true,
-                            message: '请输入云盘账号',
-                            trigger: 'change',
-                        }">
-                            <a-input v-model:value="domain.account" placeholder="请输入云盘账号"
-                                style="width: 150px; margin-right: 8px" />
+        <div style="height: 100%;overflow-y: auto;" ref="formBodyRef">
 
-                        </a-form-item>
-                    </a-col>
-                    <a-col :span="10">
-                        <a-form-item label="密码" :name="['domains', index, 'password']" :rules="{
-                            required: true,
-                            message: '请输入云盘密码',
-                            trigger: 'change',
-                        }">
-                            <a-input v-model:value="domain.password" placeholder="请输入云盘密码"
-                                style="width: 150px; margin-right: 8px" type="password" />
-                            <MinusCircleOutlined v-if="formState.domains.length > 1" class="dynamic-delete-button"
-                                @click="removeDomain(domain)" />
-                        </a-form-item>
-                    </a-col>
-                </a-row>
+            <a-form ref="formRef" :model="formState">
+                <template v-for="(domain, index) in formState.domains" :key="domain.key">
+                    <a-row>
+                        <a-col :span="11">
+                            <a-form-item label="账号" :name="['domains', index, 'account']" :rules="{
+                                required: true,
+                                message: '请输入云盘账号',
+                                trigger: 'change',
+                            }">
+                                <a-input v-model:value="domain.account" placeholder="请输入云盘账号"
+                                    style="width: 150px; margin-right: 8px" />
+
+                            </a-form-item>
+                        </a-col>
+                        <a-col :span="10">
+                            <a-form-item label="密码" :name="['domains', index, 'password']" :rules="{
+                                required: true,
+                                message: '请输入云盘密码',
+                                trigger: 'change',
+                            }">
+                                <a-input v-model:value="domain.password" placeholder="请输入云盘密码"
+                                    style="width: 150px; margin-right: 8px" type="password" />
+                                <MinusCircleOutlined v-if="formState.domains.length > 1" class="dynamic-delete-button"
+                                    @click="removeDomain(domain)" />
+                            </a-form-item>
+                        </a-col>
+                    </a-row>
 
 
-            </template>
+                </template>
 
-        </a-form>
+            </a-form>
+        </div>
+
+
         <template #footer>
             <a-button type="dashed" @click="addDomain">
                 <PlusOutlined />
@@ -87,12 +92,20 @@ let formState = reactive({
         }
     ]
 })
-
+const formBodyRef = ref(null)
 const addDomain = () => {
     formState.domains.push({
         account: '',
         password: '',
     });
+// 使用 nextTick 确保 DOM 更新后再滚动
+    nextTick(() => {
+        formBodyRef.value.scrollTo({
+        top: formBodyRef.value.scrollHeight,
+        behavior: 'smooth',
+    });
+    })
+    
 };
 const removeDomain = item => {
     const index = formState.domains.indexOf(item);

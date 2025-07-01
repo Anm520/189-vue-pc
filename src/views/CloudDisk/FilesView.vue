@@ -24,6 +24,7 @@
         </a-space>
         <a-space>
           <a-button type="primary" @click="getlistFiles" :icon="h(SyncOutlined)">刷新</a-button>
+          
           <a-button type="primary" @click="showCreateFolderModel = true" :icon="h(PlusOutlined)">新建文件夹</a-button>
           <a-button type="primary" @click="showBatchRenameFolderModel = true" :icon="h(FormOutlined)">
             批量重命名
@@ -32,11 +33,13 @@
           <a-button type="primary" @click="handleDelFolder(state.selectedRows)" :icon="h(DeleteOutlined)">
             批量删除
           </a-button>
+          <a-button type="primary" @click="showDefaultFolders=!showDefaultFolders" :icon="h(SyncOutlined)">{{showDefaultFolders?'隐藏系统文件夹':'展示系统文件夹'}}</a-button>
           <a-button type="primary" @click="handleFullPath" :icon="h(FormOutlined)"> 获取路径</a-button>
+
         </a-space>
       </div>
 
-      <a-table :columns="columns" :dataSource="dataSource" :loading="state.loading" :pagination="false"
+      <a-table :columns="columns" :dataSource="filterDefaultFolders" :loading="state.loading" :pagination="false"
         :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
         :scroll="{ y: 'clac(100% - 100px)' }" rowKey="id">
         <template #bodyCell="{ column, record }">
@@ -100,8 +103,10 @@ import { message } from 'ant-design-vue'
 import { ROOT_ID } from '@/utils/constant.js'
 import { useClipboard } from '@vueuse/core'
 import FolderTreeModel from '@/components/FolderTreeModel.vue'
-
 import { useRoute } from 'vue-router'
+import { useCloudDiskStore } from '@/stores/CloudDisk.js'
+
+const cloudDiskStore = useCloudDiskStore()
 const route = useRoute()
 const path = route.query.path
 const breadcrumb = ref([{ name: '根目录', id: ROOT_ID }])
@@ -167,6 +172,20 @@ const showRenameFolderModel = ref(false)
 const showCreateFolderModel = ref(false)
 const eNum = ref(undefined)
 const dataSource = ref([])
+const showDefaultFolders = ref(false)
+const handleShowDefaultFolders = () => {
+    showDefaultFolders.value = !showDefaultFolders.value
+   
+}
+// 默认目录
+const defaultFolders = ['0',0,-11,-12,-13,-14,-15,-16]
+const filterDefaultFolders = computed(() => {
+  if (showDefaultFolders.value) {
+    return dataSource.value
+  } else {
+    return dataSource.value.filter((item) => !defaultFolders.includes(item.id))
+  }
+})
 
 watch(eNum, () => {
   console.log('eNum-watch>>>', eNum.value)
@@ -178,6 +197,16 @@ watch(eNum, () => {
     state.selectedRowKeys = []
   }
 })
+watch(
+  () => cloudDiskStore.CloudDiskUserInfo.account,
+  (val) => {
+    console.log('state.selectedRows-watch>>>', val)
+    if (val) {
+     Folder.value = ROOT_ID
+      getlistFiles()
+    }
+  },
+)
 
 function getlistFiles() {
   state.selectedRows = []
