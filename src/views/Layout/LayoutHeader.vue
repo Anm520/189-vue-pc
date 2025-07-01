@@ -7,7 +7,7 @@
     </a-avatar>
     <span style="cursor: pointer;" @click="showModal">{{ account }}</span>
     <a-modal v-model:open="open" title="账号管理" @ok="handleOk" width="800px">
-      <AccountList />
+      <AccountList @close="open = false" />
     </a-modal>
   </a-space>
 

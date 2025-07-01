@@ -38,7 +38,7 @@
 </template>
 <script setup>
   import API from '@/api/cloud.js'
-  import { createVNode, h, nextTick, onMounted, ref } from 'vue'
+  import { createVNode, h, nextTick, onMounted, ref,defineEmits } from 'vue'
   import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons-vue'
   import AddAccModel from './AddAccModel.vue'
   import EditAccModel from './EditAccModel.vue'
@@ -47,6 +47,7 @@
   import router from '@/router'
   import { useCloudDiskStore } from '@/stores/CloudDisk'
   import { hidePhone } from '@/utils'
+  let emit = defineEmits(['close'])
   const openAddAcc = ref(false)
   const openEditAcc = ref(false)
   const editAccount = ref('')
@@ -151,6 +152,7 @@
     window.localStorage.setItem('account', res.account)
     cuurrentAcc.value = res.account
     CloudDiskStore.setCloudDiskUserInfo({ account: res.account })
+    emit('close')
   }
   const onLogin = (account) => {
     tableLoading.value = true
