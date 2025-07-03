@@ -9,7 +9,7 @@ export const STATUS_RUN = 1
 /**
  * @description 状态_暂停
  */
-export const STATUS_PAUSE = 2
+export const STATUS_PAUSE = 0
 /**
  * @description 状态_完结
  */
