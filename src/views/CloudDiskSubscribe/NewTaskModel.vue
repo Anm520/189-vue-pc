@@ -352,14 +352,31 @@ const onSearch = (shareCode, isUrl) => {
     let code = "";
     console.log("isUrl >>>", isUrl);
     if (isUrl) {
-        code = shareCode.match(/\/t\/([^\/]+)/)[1] || "";
-        console.log("code >>>", code);
+        // code = shareCode.match(/\/t\/([^\/]+)/)[1] || "";
+    const regex =
+  /(?:cloud\.189\.cn\/t\/|cloud\.189\.cn\/web\/share\?code=)([a-zA-Z0-9]+).*?[（(]访问码[:：]\s*([a-zA-Z0-9]+)[）)]/;
+        const match = shareCode.match(regex);
+        
+      if (!match) {
+        // 尝试匹配没有访问码的链接
+        const noAccessCodeRegex = /(?:cloud\.189\.cn\/t\/|cloud\.189\.cn\/web\/share\?code=)([a-zA-Z0-9]+)/;
+        const noAccessCodeMatch = shareCode.match(noAccessCodeRegex);
+        code = noAccessCodeMatch ? noAccessCodeMatch[1] : "";
+      }else{
+  code = match ? match[1] : "";
+   formState.access_code = match && match[2] ? match[2] : "";
+      }
+        console.log("match >>>", match);
+      
         formState.share_code = code;
+       
+      
+        
     } else {
         code = shareCode;
     }
     console.log("shareCode", shareCode);
-    API.getShareInfoByCode({ shareCode: code }).then((res) => {
+    API.getShareInfoByCode({ shareCode: code,accessCode:formState.access_code}).then((res) => {
         const { shareMode, shareId, fileId, fileName, accessCode } = res;
         shareCodeInfo.value = {
             shareMode,
@@ -371,7 +388,7 @@ const onSearch = (shareCode, isUrl) => {
         formState.share_mode = shareMode;
         formState.share_file_id = fileId;
         formState.task_name = fileName;
-        formState.access_code = accessCode;
+        // formState.access_code = accessCode;
     });
 };
 const handleShareFile = (id) => {
