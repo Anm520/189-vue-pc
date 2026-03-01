@@ -382,7 +382,7 @@ const onSearch = (shareCode, isUrl) => {
             shareMode,
             shareId: String(shareId),
             fileId,
-            accessCode,
+            accessCode:accessCode||formState.access_code,
         };
         formState.share_id = String(shareId);
         formState.share_mode = shareMode;
